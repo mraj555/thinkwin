@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1084694881314",
+    "project_id": "thinkwin-d3a6a",
+    "storage_bucket": "thinkwin-d3a6a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084694881314:android:907cb5afc8d1fed6b6167b",
+        "android_client_info": {
+          "package_name": "com.devtestify.thinkwin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAydmH4Lw2NrZQxKVJcsmR8q9fISGFstrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
