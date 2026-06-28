@@ -1,115 +1,142 @@
 # ThinkWin
 
-ThinkWin is a Flutter-based multi-platform application structured as a modular product with separate user-facing and admin-facing experiences. The codebase is organized around feature modules, shared core services, and Firebase-backed data access so new developers can quickly understand how the app is composed.
+ThinkWin is a Flutter application organized as a modular product with distinct user and admin experiences. The repository is structured so that UI, navigation, business logic, shared services, and Firebase integration are separated by responsibility, making it easier for the next developer to understand where features live and how they connect.
 
-## Overview
+## 1. Product overview
 
-- Product type: Flutter application with a modular feature-based architecture
+- Type: Cross-platform Flutter application
 - Target platforms: Android, iOS, Web, Linux, macOS, and Windows
-- Primary design goal: keep business logic, UI, routing, and shared infrastructure clearly separated
+- Primary goal: keep the application scalable by separating user-facing flows, admin flows, and shared infrastructure
+- Architectural style: feature-based module structure with shared core services and Firebase-backed data access
 
-## Tech Stack
+## 2. Tech stack
 
-### Frontend and app framework
+### Application framework
 
 - Flutter SDK with Dart
-- Material Design UI foundation
+- Material Design-based UI foundation
 
-### State and app architecture
+### State management and navigation
 
-- GetX for state management and app-level navigation patterns
-- Feature-oriented module structure for scalable development
+- GetX for state management and app-level routing patterns
+- A modular folder structure to keep feature-specific logic isolated
 
-### Backend and data
+### Backend and data layer
 
-- Firebase Core for platform initialization
-- Firebase Authentication for user sign-in and identity flows
-- Cloud Firestore for document-based data storage
-- Shared preferences for lightweight local persistence
+- Firebase Core for app initialization
+- Firebase Authentication for user identity and auth-related workflows
+- Cloud Firestore for document-based app data
+- Shared Preferences for lightweight local persistence
 
-### UI and experience enhancements
+### UI and experience
 
 - Google Fonts for typography
-- Iconsax for iconography
-- Lottie, shimmer, flutter_animate, and flutter_staggered_animations for polished UI motion
-- fl_chart and percent_indicator for analytics and progress visuals
-- flutter_svg for scalable vector assets
+- Iconsax for icons
+- Lottie, shimmer, flutter_animate, and flutter_staggered_animations for motion and polish
+- fl_chart and percent_indicator for charts and progress views
+- flutter_svg for vector-based assets
 
-### Utilities and developer support
+### Developer utilities
 
-- intl for localization and date formatting
-- uuid for unique identifier generation
+- intl for date and localization formatting
+- uuid for generating unique IDs
 - equatable for value-based model comparisons
-- flutter_lints for code-quality enforcement
+- flutter_lints for code quality and linting guidance
 
-## Architecture
+## 3. Architecture
 
-ThinkWin follows a layered, feature-first architecture:
+The project follows a layered architecture that separates presentation, business logic, and infrastructure.
 
-1. App shell
-   - The entry point is lib/main.dart, where the Flutter app is launched and the root widget is defined.
+### 3.1 App entry point
 
-2. Feature modules
-   - The user and admin folders are the main feature areas of the application.
-   - Each feature area contains its own controllers, screens, routes, widgets, and services so feature-specific logic stays isolated.
+- The application bootstraps from [lib/main.dart](lib/main.dart).
+- This is the top-level Flutter entry file where the root app widget is created.
 
-3. Shared core layer
-   - The core folder holds app-wide constants, global controllers, shared services, theme definitions, and utility helpers.
-   - Anything used across multiple modules should live here rather than being duplicated inside feature folders.
+### 3.2 Feature modules
 
-4. Domain models
-   - The models folder is intended for the data objects and value types used by the app.
-   - Models help keep business data consistent across screens, services, and controllers.
+- The [lib/user](lib/user) directory contains all user-facing features.
+- The [lib/admin](lib/admin) directory contains all admin-focused features.
+- Each module is expected to own its own:
+  - screens for UI pages
+  - controllers for state and business logic
+  - routes for navigation
+  - widgets for reusable UI component pieces
+  - services for backend or domain-specific operations
 
-5. Firebase integration
-   - Firebase configuration is managed through lib/firebase_options.dart.
-   - Backend-facing logic should be routed through services so the UI layer does not directly manage storage or authentication concerns.
+### 3.3 Shared core layer
 
-## Project Structure
+- The [lib/core](lib/core) folder is the shared foundation of the app.
+- It holds reusable application-wide concerns such as:
+  - constants
+  - global controllers
+  - shared services
+  - theme configuration
+  - utility helpers and extensions
+
+### 3.4 Models and domain objects
+
+- The [lib/models](lib/models) folder is intended for domain models and reusable data objects.
+- These should be used consistently across screens, controllers, and services so data flow remains predictable.
+
+### 3.5 Firebase integration
+
+- Firebase configuration is managed through [lib/firebase_options.dart](lib/firebase_options.dart).
+- Authentication, Firestore access, and other backend-facing operations should be handled through services rather than embedded directly inside screens.
+
+## 4. Project structure and responsibility map
 
 ```text
 lib/
-  main.dart
-  firebase_options.dart
+  main.dart                     # Root app entry point
+  firebase_options.dart         # Firebase platform configuration
 
-  admin/
-    controllers/      # Admin-side state and business logic
-    routes/           # Admin navigation definitions
-    screens/          # Admin UI pages
-    services/         # Admin-specific backend or API services
-    widgets/          # Reusable admin UI components
+  admin/                        # Admin-side feature module
+    controllers/                # Admin state and logic
+    routes/                     # Admin navigation setup
+    screens/                    # Admin screens/pages
+    services/                   # Admin-specific backend logic
+    widgets/                    # Reusable admin UI components
 
-  user/
-    controllers/      # User-side state and business logic
-    providers/        # Optional provider-based state containers
-    routes/           # User navigation definitions
-    screens/          # User-facing pages
-    widgets/          # Reusable user interface components
+  user/                         # User-side feature module
+    controllers/                # User state and logic
+    providers/                  # Optional provider-based state containers
+    routes/                     # User navigation setup
+    screens/                    # User screens/pages
+    widgets/                    # Reusable user UI components
 
-  core/
-    constants/        # Shared constants, enums, and static values
-    controllers/      # Global controllers and shared state
-    services/         # Shared services such as storage or networking helpers
-    theme/            # App theme, colors, text styles, and spacing
-    utils/            # General-purpose helpers and extensions
+  core/                         # Shared app infrastructure
+    constants/                  # Global constants and enums
+    controllers/                # Shared controllers
+    services/                   # Common services and helpers
+    theme/                      # Theme, colors, typography
+    utils/                      # Helpers and extensions
 
-  models/             # Data models and domain objects
+  models/                       # Domain models and entities
 ```
 
-## How the pieces connect
+## 5. How the main files connect
 
-- Screens are responsible for presentation and user interaction.
-- Controllers or providers manage the state needed by those screens.
-- Services handle backend communication, local persistence, and reusable business operations.
-- Routes define navigation between screens.
-- Shared resources in core are used by both the user and admin experiences.
+A typical flow in this project should look like this:
 
-## Development guidance for the next developer
+1. [lib/main.dart](lib/main.dart) starts the app and creates the root application shell.
+2. Navigation routes in the user or admin module direct the app to the appropriate screen.
+3. A screen uses a controller or provider to request and manage state.
+4. The controller delegates work to a service when data or backend operations are needed.
+5. Services interact with Firebase, local storage, or other shared infrastructure.
+6. Data is returned to the controller, then rendered in the screen through models and widgets.
 
-- Keep feature-specific code inside the user or admin folders.
-- Place reusable cross-cutting logic in core.
-- Prefer small, focused widgets over large UI components.
+This means the intended dependency direction is:
+
+- Screen -> Controller/Provider -> Service -> Firebase/Storage/Shared Preferences
+- Models are passed between layers to keep the data contract consistent
+
+## 6. Development conventions for future contributors
+
+- Keep feature-specific code inside [lib/user](lib/user) or [lib/admin](lib/admin).
+- Place reusable app-wide logic in [lib/core](lib/core).
+- Prefer small, focused widgets over large, multi-purpose UI components.
 - Keep controllers lightweight and delegate data work to services.
-- Add or update models whenever data moves between layers.
+- Update or create models whenever data moves across boundaries.
+- Keep routing, UI, state, and backend concerns separated so the app remains easy to extend.
 
-This README is intended as an architectural guide for understanding how the project is organized and how the major responsibilities are distributed across the repository.
+This README serves as the architectural map for the repository and should help new developers understand where the main responsibilities live and how the core parts of the application are meant to connect.
